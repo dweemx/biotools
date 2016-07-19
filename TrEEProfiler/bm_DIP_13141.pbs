@@ -1,0 +1,32 @@
+#!/bin/sh
+
+### The fact that the comments was preceded by only 1 hash symbol caused the qsub program to ignore all the PBS settings
+### So we should preceded the comments by 3 hash symbol 
+
+### Pass parameters to PBS file : shttp://stackoverflow.com/questions/10094141/directly-pass-parameters-to-pbs-script
+### Use parameters with batch file : http://stackoverflow.com/questions/18003370/script-parameters-in-bash
+### Variables in BASH : http://stackoverflow.com/questions/2268104/bash-script-variable-declaration-command-not-found
+### Concatenate string in BASH : http://stackoverflow.com/questions/4181703/how-can-i-concatenate-string-variables-in-bash
+
+###### Select resources #####
+### Output files
+#PBS -o pbs-bm-DIP-13141.log
+#PBS -j oe
+
+### Mail to user
+### PBS -m ae
+#PBS -M maxime.dewaegeneer@student.kuleuven.be
+
+### Set the queue of the job
+### PBS -q q7d
+
+### Set walltime to ~max of queue 160 hours because process last longer than 24 hours and less than 7 days 
+#PBS -l walltime=24:00:00
+### Westmere processors are the most cheapest
+#PBS -l nodes=1:ppn=20:ivybridge
+### PBS -l partition=gpu,nodes=1:M2070 --> ~1.11 hours/million states but more expensive than westmere
+cd ~/thesis
+### Don't put quotes --> it will not find the file!
+### Set up the run
+dos2unix bm_DIP.sh
+sh bm_DIP.sh 13141
